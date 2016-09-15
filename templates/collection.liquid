@@ -102,12 +102,3 @@
 </div>
 
 {% endpaginate %}
-<script>
-  {% comment %}
-  var response = $.getJSON('/cart.js').done(function(){
-    var parsing = JSON.parse(response.responseText);
-    var cartItems = parsing.items;
-    return cartItems;
-  });
-  {% endcomment %}
-</script>

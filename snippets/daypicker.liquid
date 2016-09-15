@@ -3,23 +3,6 @@
 </select>
 
 <script>
-  // function formatDate(date) {
-  //     var d = new Date(date),
-  //         month = '' + (d.getMonth() + 1),
-  //         day = '' + d.getDate(),
-  //         year = d.getFullYear();
-
-  //     if (month.length < 2) month = '0' + month;
-  //     if (day.length < 2) day = '0' + day;
-
-  //     return [day,month,year].join('-');
-  // }
-
-  // function capitalize(s)
-  // {
-  	// return s && s[0].toUpperCase() + s.slice(1);
-  // }
-
   $(document).ready(function() {
     $(window).unload(saveSettings);
     loadSettings();
@@ -61,31 +44,24 @@
   };
   $("#delivery-picker").append(options);
   $("#delivery-picker").change(function() {
-    var string = $("#delivery-picker").val();
-    var words = string.split(" ");
+    var dayChosen = $("#delivery-picker").val();
+    var words = dayChosen.split(" ");
     var firstWord = words[0].toLowerCase();
-    $(".no-bullets a").each(function() {
-      	// this.toString().replace("+mardi", "");
-        this.href += "+" + firstWord;
-    });
-    // $.post('/cart/clear.js');
-    var productId = {{ product.id }};
     var productIds = [];
     {% assign str = "" %}
     {% for item in cart.items %}
-    productIds.push({{ item.product.id }});
-    productIds.push({{ item.id }});
+      productIds.push("{{ item.product.metafields.global['availability'] }}");
+      productIds.push({{ item.id }});
     {% endfor %}
-    if (productIds.includes(productId)) {
-      var index = productIds.indexOf(productId) + 1;
-      console.log(productIds[index]);
-      $.post('/cart/change.js', { quantity: 0, id: productIds[index] });
+    var productIdsLenght = productIds.length;
+    for (var i = 0; i < productIdsLenght; i = i + 2) {
+      var test = (productIds[i].toString().indexOf(firstWord) !== -1);
+      if (test) {
+      }
+      else {
+        $.post('/cart/change.js', { quantity: 0, id: productIds[i + 1] });
+      }
     }
     location.reload(true);
   });
-  // var string = $("#delivery-picker").val();
-  // var words = string.split(" ");
-  // var firstWord = words[0].toLowerCase();
-  // var str = $("#availability-8868897223").text();
-  // str.indexOf(firstWord) !== -1
 </script>
