@@ -1,0 +1,42 @@
+{% comment %}
+  Hey there! This snippet is managed by Locksmith (uselocksmith.com). You can
+  fiddle with what's below, but your changes will be reset the next time that
+  Locksmith interacts with your shop.
+
+  Last updated: Tue, 13 Sep 2016 04:24:52 +0000
+  Integration version: v4.8
+{% endcomment %}
+
+{%assign _m = shop%}{%assign _i = theme%}{%assign _9 = customer%}{%assign _o = link%}{%assign _8 = linklist%}{%assign _p = cart%}{%assign _n = page%}{%assign _e = article%}{%assign _q = blog%}{%assign _5 = collection%}{%assign _c = variant%}{%assign _d = product%}{%assign _7 = template%}{%capture _%}{%assign _01 = nil%}{%assign _00 = false%}{%assign _g = true%}{%assign _l = false%}{%assign _v = false%}{%assign _t = false%}{%assign _k = false%}{%assign _0 = false%}{%assign _r = 'resource'%}{%assign _x = ''%}{%assign _f = ''%}{%assign _z = ''%}{%assign _w = false%}{%if locksmith_scope and locksmith_scope != 'product_in_collection'%}{%assign _01 = locksmith_scope%}{%else%}{%assign _01 = _7|split:'/'|first|split:'.'|first%}{%endif%}{%if locksmith_hiding_scope%}{%assign _r = locksmith_hiding_scope%}{%endif%}{%if _01 == blank%}{%assign _01 = 'app'%}{%endif%}{%if _01 == "app" and content_for_layout contains "spof-container"%}{%assign app = "single-page-order-form"%}{%endif%}{%if _01 == "app" and content_for_layout contains "sc-shopify-qs-main-container"%}{%assign app = "one-page-quick-shop"%}{%endif%}{%if _01 == "app" and content_for_layout contains "get_surrounding_stores.php"%}{%assign app = "store-locator"%}{%endif%}{%if _01 == 'subject'%}{%assign _y = locksmith_subject%}{%if _y.price and _y.variants%}{%assign _d = _y%}{%assign _01 = 'product'%}{%elsif _y.inventory_policy%}{%assign _c = _y%}{%assign _01 = 'variant'%}{%elsif _y.all_types and _y.products%}{%assign _5 = _y%}{%assign _01 = 'collection'%}{%elsif _y.handle and _y.articles%}{%assign _q = _y%}{%assign _01 = 'blog'%}{%elsif _y.content and _y.excerpt and _y.comments%}{%assign _e = _y%}{%assign _01 = 'article'%}{%elsif _y.handle and _y.author%}{%assign _n = _y%}{%assign _01 = 'page'%}{%elsif _y.total_price and _y.total_weight%}{%assign _p = _y%}{%assign _01 = 'cart'%}{%elsif _y.links and _y.title%}{%assign _8 = _y%}{%assign _01 = 'linklist'%}{%elsif _y.type%}{%assign _r = 'link_to_resource'%}{%if _y.type == 'collection_link'%}{%assign _5 = _y.object%}{%assign _01 = 'collection'%}{%elsif _y.type == 'product_link'%}{%assign _d = _y.object%}{%assign _01 = 'product'%}{%elsif _y.type == 'page_link'%}{%assign _n = _y.object%}{%assign _01 = 'page'%}{%elsif _y.type == 'blog_link'%}{%assign _q = _y.object%}{%assign _01 = 'blog'%}{%elsif _y.url == '/collections/all'%}{%assign _5 = collections.all%}{%assign _01 = 'collection'%}{%else%}{%assign _r = 'resource'%}{%assign _o = _y%}{%assign _01 = 'link'%}{%endif%}{%endif%}{%endif%}{%if _5 and _01 == 'product'%}{%assign locksmith_scope = 'product_in_collection'%}{%assign scope = 'product_in_collection'%}{%else%}{%assign locksmith_scope = _01%}{%assign scope = _01%}{%endif%}{%assign _a = false%}{%assign _3 = false%}{%assign _4 = false%}{%unless _3%}{%assign _4 = true%}{%endunless%}{%assign _2 = false%}{%if _01 == "cart"%}{%capture _x%}{{_x}},41077{%endcapture%}{%assign _s = false%}{%assign _1 = nil%}{%unless _s%}{%unless _9.tags contains "lead" or customer == nil%}{%assign _s = true%}{%assign _1 = 58125%}{%endunless%}{%endunless%}{%if _s%}{%capture _f%}{{_f}},41077{%endcapture%}{%capture _z%}{{_z}},{{_1}}{%endcapture%}{%else%}{%assign _v = false%}{%endif%}{%endif%}{%if _6%}{%assign _5 = _b%}{%assign _6 = false%}{%endif%}{%if _j%}{%assign _01 = _u%}{%assign _j = false%}{%endif%}{%if _2%}{%assign _w = true%}{%endif%}{%if _w%}{%assign _f = _x%}{%assign _t = false%}{%endif%}{%assign locksmith_lock_ids = _x|remove_first:','|split:','%}{%assign locksmith_opened_lock_ids = _f|remove_first:','|split:','%}{%assign locksmith_key_ids = _z|remove_first:','|split:','%}{%if locksmith_lock_ids.size > 0%}{%assign _00 = true%}{%unless locksmith_opened_lock_ids == locksmith_lock_ids%}{%assign _g = false%}{%assign _l = true%}{%endunless%}{%if _a and _4%}{%assign _g = false%}{%assign _l = true%}{%endif%}{%endif%}{%assign locksmith_locked = _00%}{%unless locksmith_scope%}{%assign locksmith_scope = _01%}{%endunless%}{%assign locksmith_access_granted = _g%}{%assign locksmith_access_denied = _l%}{%assign locksmith_manual_lock = _v%}{%assign locksmith_server_lock = _t%}{%assign locksmith_hide_resource = _k%}{%assign locksmith_hide_links_to_resource = _0%}{%assign locksmith_transparent = false%}{%if _g%}{%assign locksmith_transparent = true%}{%elsif _k == false and _r == 'resource'%}{%assign locksmith_transparent = true%}{%elsif _0 == false and _r == 'link_to_resource'%}{%assign locksmith_transparent = true%}{%endif%}{%assign _h = _7|split:'.'|first%}{%if _h == 'product'%}{%capture locksmith_current_path%}{%if _5%}/collections/{{_5.handle}}{%endif%}/products/{{_d.handle}}{%endcapture%}{%elsif _h == 'collection'%}{%capture locksmith_current_path%}/collections/{{_5.handle}}{%endcapture%}{%elsif _h == 'page'%}{%assign locksmith_current_path = _n.url%}{%elsif _h == 'blog'%}{%assign locksmith_current_path = _q.url%}{%elsif _h == 'article'%}{%assign locksmith_current_path = _e.url%}{%elsif _7 == 'customers/login'%}{%assign locksmith_current_path = '/account/login'%}{%elsif _7 == 'customers/register'%}{%assign locksmith_current_path = '/account/register'%}{%elsif _7 == 'index'%}{%assign locksmith_current_path = '/'%}{%elsif _7 == 'list-collections'%}{%assign locksmith_current_path = '/collections'%}{%elsif _7 == 'cart'%}{%assign locksmith_current_path = '/cart'%}{%endif%}{%capture locksmith_json%}
+<script type="application/vnd.locksmith+json">{
+  "version": "v4.8",
+  "locked": {{locksmith_locked}},
+  "scope": "{{locksmith_scope}}",
+  "access_granted": {{locksmith_access_granted}},
+  "access_denied": {{locksmith_access_denied}},
+  "manual_lock": {{locksmith_manual_lock}},
+  "server_lock": {{locksmith_server_lock}},
+  "hide_resource": {{locksmith_hide_resource}},
+  "hide_links_to_resource": {{locksmith_hide_links_to_resource}},
+  "locks": {
+    "all": [{{locksmith_lock_ids|join:', '}}],
+    "opened": [{{locksmith_opened_lock_ids|join:', '}}]
+  },
+  "keys": [{{locksmith_key_ids|join:', '}}],
+  "state": {
+    "template": "{{_7}}",
+    "theme": {{_i.id}},
+    "product": {%if _d%}"{{_d.handle}}"{%else%}null{%endif%},
+    "collection": {%if _5%}"{{_5.handle}}"{%else%}null{%endif%},
+    "page": {%if _n%}"{{_n.handle}}"{%else%}null{%endif%},
+    "blog": {%if _q%}"{{_q.handle}}"{%else%}null{%endif%},
+    "article": {%if _e%}"{{_e.id}}"{%else%}null{%endif%},
+    "app": {%if locksmith_scope == "app" and app%}"{{app}}"{%else%}null{%endif%}
+  },
+  "shop": {
+    "customer_accounts_enabled": {{_m.customer_accounts_enabled}}
+  },
+  "now": {{"now"|date:"%s"}},
+  "current_path": {%if locksmith_current_path%}"{{locksmith_current_path}}"{%else%}null{%endif%}
+}</script>
+{%endcapture%}{%endcapture%}

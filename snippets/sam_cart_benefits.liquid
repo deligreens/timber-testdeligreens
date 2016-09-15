@@ -1,0 +1,159 @@
+{% if customer.email == blank %}
+{% else %}
+  <script>
+        function BuyXSubmit(buyx_cart, selector) {
+            for (var i = 0; i < buyx_cart.items.length; i++) {
+                var item = buyx_cart.items[i];
+                var sel = selector.replace("{variant_id}", item.variant_id);
+                //console.log(jQuery(sel).length, parseInt(jQuery(sel).val()), item.quantity)
+                if (jQuery(sel).length == 1) {
+                    if (parseInt(jQuery(sel).val()) != item.quantity) {
+                        alert("Please Update cart before checkout");
+                        return false
+                    }
+                }
+            }
+            return true
+        }
+
+        function SAMCartCheckBenefits(saw_cart, customer) {
+            for (var i = 0, len = saw_cart.items.length; i < len; i++) {
+                delete saw_cart.items[i].description;
+                delete saw_cart.items[i].image;
+                delete saw_cart.items[i].url;
+            }
+            var saw_shop_domain = Shopify.shop
+            jQuery.ajax({
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+              	url: 'https://samembership-www.herokuapp.com/api/v1/cart-check-benefits',
+                data: JSON.stringify({
+                    shop_slug: saw_shop_domain.replace(".myshopify.com", ""),
+                    cart: saw_cart,
+                  	customer: customer
+                }),
+                success: function(res) {
+                    jQuery("#note").val(res.order_notes)
+                    if (typeof SAMComplete == "function") {
+                      SAMComplete(res)
+                    }
+                    jQuery(".sam-current-benefits").html(res.current_benefits)
+
+                    if (res.membership_expiry_date == "") {
+                      res.membership_expiry_date = "(no expiry date)"
+                    }
+                    jQuery(".sam-membership-expiry-date").html(res.membership_expiry_date)
+                    
+                    if (res.current_benefits == "" || res.cart_total_benefits == "") {
+                      return
+                    }
+                    jQuery("#sam-benefits-info").removeClass("sam-hidden")
+                    jQuery(".sam-cart-total-benefits").html(res.cart_total_benefits)
+
+                    if (!res.current_benefits_cover_cart) {
+                        jQuery("#sam-not-enough-benefits").removeClass("sam-hidden")
+                    } else {
+                      jQuery("#purchase-benefits").removeClass("sam-hidden")
+                      jQuery(".sam-pick-address").removeClass("sam-hidden")                      
+                    }
+
+
+                    if (res.used_benefits == "") {
+
+                    } else {
+
+                    }
+                }
+            })
+        }
+
+
+    	function SAMPurchaseBenefits(saw_cart, customer) {
+            for (var i = 0, len = saw_cart.items.length; i < len; i++) {
+                delete saw_cart.items[i].image;
+                delete saw_cart.items[i].title;
+                delete saw_cart.items[i].url;
+            }
+            var saw_shop_domain = Shopify.shop
+            jQuery.ajax({
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+              	url: 'https://samembership-www.herokuapp.com/api/v1/cart-purchase-benefits',
+                data: JSON.stringify({
+                    shop_slug: saw_shop_domain.replace(".myshopify.com", ""),
+                    cart: saw_cart,
+                  	customer: customer
+                }),
+                success: function(res) {
+                   console.log(res)
+                   if (res.status == "OK") {
+                    jQuery.ajax({
+                      cache: false,
+                      contentType: "application/json; charset=utf-8",
+                      dataType: "json",
+                      type: "POST",
+                      url: '/cart/clear.js',
+                    })
+
+                    setTimeout(function() {
+                        var sam_redirect_url_internal = "/pages/thank-you"
+                        if (typeof window.sam_redirect_url == "string") {
+                        sam_redirect_url_internal = window.sam_redirect_url
+                        }
+                        window.location.href = sam_redirect_url_internal
+                    }, 300)
+
+                   } else {
+                      alert(res.status)
+                   }
+
+
+                }
+            })
+        }
+
+       	SAMCartCheckBenefits({{cart | json}}, {id: {{customer.id}}, email: "{{customer.email}}" })
+
+        jQuery("#purchase-benefits").on("click", function() {
+
+            if (typeof BuyXSubmit == "function" && typeof jQuery("#purchase-benefits").data("qty-pattern") == "string") {
+                window.buyx_cart_global = {{ cart | json }}
+                if (BuyXSubmit(window.buyx_cart_global, jQuery("#purchase-benefits").data("qty-pattern")) == false) {
+                return false
+                }
+            }
+
+
+          var ai = parseInt(jQuery("#sam-shipping-address-no").val());
+          var sam_address = {{customer.default_address | json}};
+          if (!isNaN(ai) && window.sam_addresses.length > 0) {            
+            sam_address = window.sam_addresses[ai];
+          }
+          SAMPurchaseBenefits({{cart | json}}, {id: {{customer.id}}, email: "{{customer.email}}", address: sam_address })
+        })
+
+    //https://docs.shopify.com/manual/configuration/store-customization/page-specific/cart-page/how-do-i-limit-product-quantities-on-the-cart-page-so-that-customers-can-only-purchase-whats-in-stock
+    jQuery('[max]').change(function() {
+      var max = parseInt(jQuery(this).attr('max'), 10);
+      if (isNaN(max)) {
+        return
+      }
+      var value = parseInt(jQuery(this).val(), 10) || 0;
+      if (value > max) { jQuery(this).val(max); }
+    });
+    /* change won't trigger on initial load */
+    jQuery('[max]').each(function() {
+      var max = parseInt(jQuery(this).attr('max'), 10);
+      if (isNaN(max)) {
+        return
+      }
+      var value = parseInt(jQuery(this).val(), 10) || 0;
+      if (value > max) { jQuery(this).val(max); }
+    });
+    
+  </script>
+{% endif %}

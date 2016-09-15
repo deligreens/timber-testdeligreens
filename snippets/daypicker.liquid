@@ -1,0 +1,91 @@
+<select id="delivery-picker">
+	<option>Choisir son jour de livraison</option>
+</select>
+
+<script>
+  // function formatDate(date) {
+  //     var d = new Date(date),
+  //         month = '' + (d.getMonth() + 1),
+  //         day = '' + d.getDate(),
+  //         year = d.getFullYear();
+
+  //     if (month.length < 2) month = '0' + month;
+  //     if (day.length < 2) day = '0' + day;
+
+  //     return [day,month,year].join('-');
+  // }
+
+  // function capitalize(s)
+  // {
+  	// return s && s[0].toUpperCase() + s.slice(1);
+  // }
+
+  $(document).ready(function() {
+    $(window).unload(saveSettings);
+    loadSettings();
+  });
+
+  function loadSettings() {
+    if (localStorage.deliveryPicker === undefined) {
+    	$('#delivery-picker').val($("#delivery-picker option:first").val());
+    }
+    else {
+  	$('#delivery-picker').val(localStorage.deliveryPicker);
+    }
+  }
+
+  function saveSettings() {
+    localStorage.deliveryPicker = $('#delivery-picker').val();
+  }
+
+  function toTitleCase(str)
+  {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
+
+  var delay = 2;
+  var curr = new Date;
+  var first = curr.getDate() + delay;
+  var firstday = (new Date(curr.setDate(first))).toString();
+  var options = "";
+  var arguments = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+  var blacklisted_days = ["samedi", "dimanche"];
+  for (var i = 0; i < 7; i++) {
+  	var next = new Date(curr.getTime());
+    next.setDate(first + i);
+    if (blacklisted_days.includes(next.toLocaleDateString("fr-FR", { weekday: 'long' }))) {
+    }
+    else {
+    	options += '<option>' + toTitleCase(next.toLocaleDateString("fr-FR", arguments)) + '</option>';
+    }
+  };
+  $("#delivery-picker").append(options);
+  $("#delivery-picker").change(function() {
+    var string = $("#delivery-picker").val();
+    var words = string.split(" ");
+    var firstWord = words[0].toLowerCase();
+    $(".no-bullets a").each(function() {
+      	// this.toString().replace("+mardi", "");
+        this.href += "+" + firstWord;
+    });
+    // $.post('/cart/clear.js');
+    var productId = {{ product.id }};
+    var productIds = [];
+    {% assign str = "" %}
+    {% for item in cart.items %}
+    productIds.push({{ item.product.id }});
+    productIds.push({{ item.id }});
+    {% endfor %}
+    if (productIds.includes(productId)) {
+      var index = productIds.indexOf(productId) + 1;
+      console.log(productIds[index]);
+      $.post('/cart/change.js', { quantity: 0, id: productIds[index] });
+    }
+    location.reload(true);
+  });
+  // var string = $("#delivery-picker").val();
+  // var words = string.split(" ");
+  // var firstWord = words[0].toLowerCase();
+  // var str = $("#availability-8868897223").text();
+  // str.indexOf(firstWord) !== -1
+</script>

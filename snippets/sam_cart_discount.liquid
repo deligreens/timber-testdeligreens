@@ -1,0 +1,46 @@
+{% if cart.item_count == 0 or customer.email == blank %}
+{% else %}
+  <script>
+
+        function SAMCartCheckDiscount(saw_cart, customer) {
+
+            for (var i = 0, len = saw_cart.items.length; i < len; i++) {
+                delete saw_cart.items[i].description;
+                delete saw_cart.items[i].image;
+                delete saw_cart.items[i].url;
+            }
+            var saw_shop_domain = Shopify.shop
+            jQuery.ajax({
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST",
+              	url: 'https://samembership-www.herokuapp.com/api/v1/cart-check-discount',
+                data: JSON.stringify({
+                    shop_slug: saw_shop_domain.replace(".myshopify.com", ""),
+                    cart: saw_cart,
+                  	customer: customer
+                }),
+                success: function(res) {
+                    jQuery(".sam-discount-info").html(res.cart_text)
+                    if (res.discount_code == "") {
+                       return
+                    }
+
+                    jQuery("#discount").val(res.discount_code)
+                    if (res.discount_percent > 0) {
+                      jQuery(".sam-cart-original-total").css("text-decoration", "line-through")
+                      jQuery(".sam-cart-total").html(res.member_price_format)
+                    }
+                }
+            })
+        }
+
+
+        SAMCartCheckDiscount({{cart | json}}, {id: {{customer.id}}, email: "{{customer.email}}" });
+
+        window.sam_customer_id = {{customer.id}};
+        window.sam_customer_email = "{{customer.email}}";
+
+  </script>
+{% endif %}

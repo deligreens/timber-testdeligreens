@@ -1,0 +1,59 @@
+<!-- /templates/page.liquid -->
+<div class="grid">
+
+  <div class="grid__item large--two-thirds push--large--one-sixth">
+
+    <h1>{{ page.title }}</h1>
+
+    {% comment %}
+      Regular page content goes here.
+    {% endcomment %}
+    <div class="rte">
+      {{ page.content }}
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  // function formatDate(date) {
+  //     var d = new Date(date),
+  //         month = '' + (d.getMonth() + 1),
+  //         day = '' + d.getDate(),
+  //         year = d.getFullYear();
+
+  //     if (month.length < 2) month = '0' + month;
+  //     if (day.length < 2) day = '0' + day;
+
+  //     return [day,month,year].join('-');
+  // }
+  
+  // function capitalize(s)
+  // {
+  	// return s && s[0].toUpperCase() + s.slice(1);
+  // }
+  
+  function toTitleCase(str)
+  {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
+
+  var delay = 2;
+  var curr = new Date;
+  var first = curr.getDate() + delay;
+  var firstday = (new Date(curr.setDate(first))).toString();
+  var options = "";
+  var arguments = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+  var blacklisted_days = ["samedi", "dimanche"];
+  for (var i = 0; i < 7; i++) {
+  	var next = new Date(curr.getTime());
+    next.setDate(first + i);
+    if (blacklisted_days.includes(next.toLocaleDateString("fr-FR", { weekday: 'long' }))) {
+    }
+    else {
+    	options += '<option>' + toTitleCase(next.toLocaleDateString("fr-FR", arguments)) + '</option>';  
+    }
+  };
+  $("#delivery-picker").append(options);
+</script>

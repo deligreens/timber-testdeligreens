@@ -1,0 +1,44 @@
+{% if customer.tags contains 'Club' %}
+	<p>Congrats, you're part of <b>Club Membership</b>, valid until
+	<span class="sam-membership-expiry-date" style="font-weight: bold;">loading...</span>
+	</p>
+
+
+
+	<h3>Current Balance</h3>
+	{% if customer.tags == blank %}
+
+	{% else %}
+		<span class="sam-current-benefits" style="font-weight: bold;">loading...</span>
+		{% include 'sam_cart_benefits' %}
+	{% endif %}
+
+	<p>You'll receive a $20 Gift Card for each 1,000 Points</p>
+
+	<br><br>
+	<h2>How to Earn Points</h2>
+
+	{% if customer %}
+	{% else %}
+	<h3>Create a Store Account</h3>
+	Get 25 Points and our grateful Welcome! Points granted in one minute after you create your account.
+	<br><br>
+	{% endif %}
+
+	<h3>Make a Purchase</h3>
+	Get 1 Point for every $1 you spend (excluding shipping fees &amp; taxes)
+	<br><br>
+
+	<h3>Refer a Friend</h3>
+	Get <b>500 Points</b> for every referral that completes at least one purchase
+	<br>
+	Your referral link:
+	{% if customer %}
+		&nbsp; <input type="text" value="http://{{shop.domain}}/?samr={{customer.id}}" style="display: inline-block; width: 36em; vertical-align: middle; margin-top: 15px;">
+	{% else %}
+		<a href="/account/register">Create an account</a>  to get your referral link
+	{% endif %}
+
+
+{% endif %}
+<br><br>

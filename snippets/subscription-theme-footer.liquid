@@ -1,0 +1,43 @@
+{% if template != 'cart' %}
+<script src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+<script>
+    function saveCartNoteThenRedirectToCart() {
+        
+      try {
+          data={}
+          
+          if( rjQuery('[name="note"]').val() != undefined ){
+              data['note'] = rjQuery('[name="note"]').val();
+              has_cart_note_or_attribute= true
+          }
+          if (has_cart_note_or_attribute) {
+              rjQuery.ajax({
+                  type: 'POST',
+                  data: data,
+                  url: '/cart/update.js',
+                  dataType: 'json',
+                  success: function() { 
+                    window.location.href='/cart'
+                  }
+              }); 
+          } else {
+               window.location.href='/cart'
+          }
+      } catch (e) {
+          window.location.href='/cart'
+      } //endtrycatch
+    
+    }
+
+    rjQuery = jQuery.noConflict( true );
+    var checkout_button_selectors = '[href="/checkout"], form[action="/cart"] button[type="submit"], form[action="/cart"] input[type="submit"], form[action="/checkout"] input[type="submit"],form[action="/checkout"] button[type="submit"]'
+    rjQuery('body').on('click', checkout_button_selectors, function(e){
+        e.preventDefault(); 
+        window.location.href = '/cart';
+    })
+    rjQuery(checkout_button_selectors).click( function(event) {
+       event.preventDefault();
+       saveCartNoteThenRedirectToCart()
+    });
+</script>
+{% endif %}

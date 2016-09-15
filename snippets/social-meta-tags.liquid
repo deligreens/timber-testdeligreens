@@ -1,0 +1,155 @@
+<!-- /snippets/social-meta-tags.liquid -->
+{% comment %}
+  Add Facebook and Pinterest Open Graph meta tags to product pages
+  for friendly Facebook sharing and Pinterest pinning.
+
+  More info Open Graph meta tags
+    - https://developers.facebook.com/docs/opengraph/using-objects/
+    - https://developers.pinterest.com/rich_pins/
+
+  Use the Facebook Open Graph Debugger for validation (and cache clearing)
+    - http://developers.facebook.com/tools/debug
+
+  Validate your Pinterest rich pins
+    - https://developers.pinterest.com/rich_pins/validator/
+{% endcomment %}
+{% if template contains 'product' %}
+  {% comment %}<locksmith:a312>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:type" content="product">{% endif %}
+    {% comment %}original: <meta property="og:type" content="product">{% endcomment %}
+  {% comment %}</locksmith:a312>{% endcomment %}
+  {% comment %}<locksmith:7f5c>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:title" content="{{ product.title | strip_html | escape }}">{% endif %}
+    {% comment %}original: <meta property="og:title" content="{{ product.title | strip_html | escape }}">{% endcomment %}
+  {% comment %}</locksmith:7f5c>{% endcomment %}
+  {% for image in product.images limit:3 %}
+  {% comment %}<locksmith:de1b>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image" content="http:{{ image.src | img_url: 'grande' }}">{% endif %}
+    {% comment %}original: <meta property="og:image" content="http:{{ image.src | img_url: 'grande' }}">{% endcomment %}
+  {% comment %}</locksmith:de1b>{% endcomment %}
+  {% comment %}<locksmith:6538>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image:secure_url" content="https:{{ image.src | img_url: 'grande' }}">{% endif %}
+    {% comment %}original: <meta property="og:image:secure_url" content="https:{{ image.src | img_url: 'grande' }}">{% endcomment %}
+  {% comment %}</locksmith:6538>{% endcomment %}
+  {% endfor %}
+  {% comment %}<locksmith:22ef>{% endcomment %}
+    {% include 'locksmith-variables' %}{% if locksmith_access_granted %}<meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">{% endif %}
+    {% comment %}original: <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">{% endcomment %}
+  {% comment %}</locksmith:22ef>{% endcomment %}
+  {% comment %}<locksmith:a632>{% endcomment %}
+    {% include 'locksmith-variables' %}{% if locksmith_access_granted %}<meta property="og:price:currency" content="{{ shop.currency }}">{% endif %}
+    {% comment %}original: <meta property="og:price:currency" content="{{ shop.currency }}">{% endcomment %}
+  {% comment %}</locksmith:a632>{% endcomment %}
+{% elsif template contains 'article' %}
+  {% comment %}<locksmith:1281>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:type" content="article">{% endif %}
+    {% comment %}original: <meta property="og:type" content="article">{% endcomment %}
+  {% comment %}</locksmith:1281>{% endcomment %}
+  {% comment %}<locksmith:09ff>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:title" content="{{ article.title | strip_html | escape }}">{% endif %}
+    {% comment %}original: <meta property="og:title" content="{{ article.title | strip_html | escape }}">{% endcomment %}
+  {% comment %}</locksmith:09ff>{% endcomment %}
+  {% assign img_tag = '<' | append: 'img' %}
+  {% if article.content contains img_tag %}
+    {% assign src = article.content | split: 'src="' %}
+    {% assign src = src[1] | split: '"' | first | remove: 'https:' | remove: 'http:' %}
+    {% if src %}
+  {% comment %}<locksmith:1f8b>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image" content="http:{{ src }}">{% endif %}
+    {% comment %}original: <meta property="og:image" content="http:{{ src }}">{% endcomment %}
+  {% comment %}</locksmith:1f8b>{% endcomment %}
+  {% comment %}<locksmith:8c38>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image:secure_url" content="https:{{ src }}">{% endif %}
+    {% comment %}original: <meta property="og:image:secure_url" content="https:{{ src }}">{% endcomment %}
+  {% comment %}</locksmith:8c38>{% endcomment %}
+    {% endif %}
+  {% endif %}
+{% else %}
+  {% comment %}<locksmith:ca8c>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:type" content="website">{% endif %}
+    {% comment %}original: <meta property="og:type" content="website">{% endcomment %}
+  {% comment %}</locksmith:ca8c>{% endcomment %}
+  {% comment %}<locksmith:3a61>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:title" content="{{ page_title | escape }}">{% endif %}
+    {% comment %}original: <meta property="og:title" content="{{ page_title | escape }}">{% endcomment %}
+  {% comment %}</locksmith:3a61>{% endcomment %}
+  {% if settings.logo_use_image %}
+  {% comment %}<locksmith:6bb5>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image" content="http:{{ 'logo.png' | asset_url }}">{% endif %}
+    {% comment %}original: <meta property="og:image" content="http:{{ 'logo.png' | asset_url }}">{% endcomment %}
+  {% comment %}</locksmith:6bb5>{% endcomment %}
+  {% comment %}<locksmith:38e4>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:image:secure_url" content="https:{{ 'logo.png' | asset_url }}">{% endif %}
+    {% comment %}original: <meta property="og:image:secure_url" content="https:{{ 'logo.png' | asset_url }}">{% endcomment %}
+  {% comment %}</locksmith:38e4>{% endcomment %}
+  {% endif %}
+{% endif %}
+{% if page_description %}
+  {% comment %}<locksmith:d4c3>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta property="og:description" content="{{ page_description | escape }}">{% endif %}
+    {% comment %}original: <meta property="og:description" content="{{ page_description | escape }}">{% endcomment %}
+  {% comment %}</locksmith:d4c3>{% endcomment %}
+{% endif %}
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:site_name" content="{{ shop.name }}">
+
+{% comment %}
+  This snippet renders meta data needed to create a Twitter card
+  for products and articles.
+
+  Your cards must be approved by Twitter to be activated
+    - https://dev.twitter.com/docs/cards/validation/validator
+
+  More information:
+   - https://dev.twitter.com/cards/types/summary
+{% endcomment %}
+
+{% comment %}
+  Twitter user name of the site, based on theme settings
+{% endcomment %}
+{% if settings.twittercard_handle != blank %}
+  <meta name="twitter:site" content="{{ settings.twittercard_handle }}">
+{% endif %}
+<meta name="twitter:card" content="summary">
+{% if template contains 'product' %}
+  {% comment %}<locksmith:1e92>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:title" content="{{ product.title }}">{% endif %}
+    {% comment %}original: <meta name="twitter:title" content="{{ product.title }}">{% endcomment %}
+  {% comment %}</locksmith:1e92>{% endcomment %}
+  {% comment %}<locksmith:448c>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:description" content="{{ product.description | strip_html | truncatewords: 140, '' | escape }}">{% endif %}
+    {% comment %}original: <meta name="twitter:description" content="{{ product.description | strip_html | truncatewords: 140, '' | escape }}">{% endcomment %}
+  {% comment %}</locksmith:448c>{% endcomment %}
+  {% comment %}<locksmith:df64>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:image" content="https:{{ product.featured_image.src | img_url: 'medium' }}">{% endif %}
+    {% comment %}original: <meta name="twitter:image" content="https:{{ product.featured_image.src | img_url: 'medium' }}">{% endcomment %}
+  {% comment %}</locksmith:df64>{% endcomment %}
+  {% comment %}<locksmith:a10d>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:image:width" content="240">{% endif %}
+    {% comment %}original: <meta name="twitter:image:width" content="240">{% endcomment %}
+  {% comment %}</locksmith:a10d>{% endcomment %}
+  {% comment %}<locksmith:b68a>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:image:height" content="240">{% endif %}
+    {% comment %}original: <meta name="twitter:image:height" content="240">{% endcomment %}
+  {% comment %}</locksmith:b68a>{% endcomment %}
+{% elsif template contains 'article' %}
+  {% comment %}<locksmith:4bac>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:title" content="{{ article.title }}">{% endif %}
+    {% comment %}original: <meta name="twitter:title" content="{{ article.title }}">{% endcomment %}
+  {% comment %}</locksmith:4bac>{% endcomment %}
+  {% comment %}<locksmith:06e0>{% endcomment %}
+    {% include 'locksmith-variables', locksmith_hiding_scope: 'resource' %}{% if locksmith_transparent %}<meta name="twitter:description" content="{{ article.excerpt_or_content | strip_html | truncatewords: 140, '' | escape }}">{% endif %}
+    {% comment %}original: <meta name="twitter:description" content="{{ article.excerpt_or_content | strip_html | truncatewords: 140, '' | escape }}">{% endcomment %}
+  {% comment %}</locksmith:06e0>{% endcomment %}
+  {% comment %}
+    Check if content contains an image to add to the card
+      - Source: http://blog.viralica.com/2013/09/twitter-product-cards-on-shopify/
+  {% endcomment %}
+  {% if article.content contains "<img" %}
+    {% assign src = article.content | split: 'src="' %}
+    {% assign src = src[1] | split: '"' | first | replace: '//cdn', 'http://cdn' | replace: 'http:http://', 'http://' | remove: 'https:' %}
+    {% if src %}
+  <meta property="twitter:image" content="{{ src }}">
+    {% endif %}
+  {% endif %}
+{% endif %}
