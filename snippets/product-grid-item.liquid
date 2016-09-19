@@ -87,13 +87,13 @@
       <br><s>{{ product.compare_at_price | money }}</s>
     {% endif %}
   </p>
-  
-  <form method="post" action="/cart/add" data-productid="{{product.id}}" > 
- {% if product.available %}{% include 'subscription-product' %}{% endif %} 
+
+  <form method="post" action="/cart/add" data-productid="{{product.id}}" >
+ {% if product.available %}{% include 'subscription-product' %}{% endif %}
     <input type="hidden" name="id" data-productid="{{product.id}}" value="{{ product.variants.first.id }}" />
     <input type="submit" value="Add" class="btn" />
   </form>
-  
+
   <br>
 
 </div>

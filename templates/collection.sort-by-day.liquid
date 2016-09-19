@@ -1,0 +1,122 @@
+<!-- /templates/collection.liquid -->
+{% comment %}
+
+  For more information on collection tags:
+    - http://docs.shopify.com/themes/liquid-variables/collection
+
+{% endcomment %}
+
+{% paginate collection.products by 48 %}
+
+{% include 'breadcrumb' %}
+{% comment %}
+	{% include 'products-metafields' %}
+{% endcomment %}
+{% comment %}
+  Use .grid--rev so that the collection tags appear below the products on mobile
+{% endcomment %}
+{% assign day = cart.attributes['dayChosen'] | downcase %}
+{% assign day_liquid = day | split: " " | first %}
+
+<div class="grid--rev">
+  <div class="grid__item large--three-quarters">
+
+    {% comment %}
+      Different markup if a collection description exists
+    {% endcomment %}
+    {% if collection.description != blank %}
+      <header class="section-header">
+        <h1 class="section-header__title">{{ collection.title }}</h1>
+        <div class="rte rte--header">
+          {{ collection.description }}
+        </div>
+      </header>
+      <hr>
+      <div class="section-header">
+        <div class="section-header__right">
+          {% include 'collection-sorting' %}
+        </div>
+      </div>
+    {% else %}
+      <header class="section-header">
+        <h1 class="section-header__title section-header__left">{{ collection.title }}</h1>
+        <div class="section-header__right">
+          {% include 'collection-sorting' %}
+        </div>
+      </header>
+    {% endif %}
+
+    {% comment %}
+      Use class grid-uniform to have evenly sized columns clear
+      each other properly at each breakpoint.
+    {% endcomment %}
+    <div class="grid-uniform">
+
+      {% comment %}
+        Loop through our products in the current collection.
+        See the snippet 'product-grid-item' for the layout.
+      {% endcomment %}
+{% comment %}      {% assign filtered_products = "" %}
+      {% for product in collection.products %}
+        {% if product.metafields.global.availability contains day_liquid %}
+          {% assign filtered_products = filtered_products | append: product.title | append: "|" %}
+        {% endif %}
+      {% endfor %}
+      {% assign myArray = filtered_products | split: "|" %}
+      {% for item in myArray %}
+        <p>{{ item }}</p>
+      {% endfor %}{% endcomment %}
+
+      {% assign no_items = true %}
+      {% for product in collection.products %}
+        {% if product.metafields.global.availability contains day_liquid %}
+          {% include 'product-grid-item' %}
+          {% assign no_items = false %}
+        {% endif %}
+      {% else %}
+
+        {% if collection.handle == 'all' and current_tags == '' %}
+
+          {% comment %}
+            Add default products to help with onboarding for collections/all only
+          {% endcomment %}
+          {% unless emptyState %}
+            {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
+            {% assign emptyState = true %}
+          {% endunless %}
+          {% include 'onboarding-empty-collection' %}
+
+        {% else %}
+
+          {% comment %}
+            If collection exists but is empty, display message
+          {% endcomment %}
+          <div class="grid__item">
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+          </div>
+
+        {% endif %}
+
+      {% endfor %}
+      {% if no_items %}
+        <p>Aucun jour de livraison n'est choisi</p>
+      {% endif %}
+
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <hr>
+      <div class="pagination">
+        {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="grid__item large--one-quarter">
+    {% include 'collection-sidebar' %}
+  </div>
+
+</div>
+
+{% endpaginate %}

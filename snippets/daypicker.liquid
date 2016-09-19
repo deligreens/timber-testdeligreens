@@ -44,12 +44,8 @@
   };
   $("#delivery-picker").append(options);
   $("#delivery-picker").change(function() {
-    var response = $.getJSON('/cart.js').done(function(){
-       var parsing = JSON.parse(response.responseText);
-       var cartAttributes = parsing.attributes;
-       var dayChosen = $("#delivery-picker").val();
-       $.post('/cart/update.js', { attributes: { dayChosen } });
-    });
+    var dayChosen = $("#delivery-picker").val();
+    $.post('/cart/update.js', { attributes: { dayChosen } });
     var dayChosen = $("#delivery-picker").val();
     var words = dayChosen.split(" ");
     var firstWord = words[0].toLowerCase();

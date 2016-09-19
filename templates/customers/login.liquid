@@ -15,6 +15,7 @@
 
     <div id="CustomerLoginForm" class="form-vertical">
       {% form 'customer_login' %}
+        <input type="hidden" name="return_to" value="/cart" />
 
         <h1>{{ 'customer.login.title' | t }}</h1>
 
@@ -31,11 +32,11 @@
         <p>
           <input type="submit" class="btn btn--full" value="{{ 'customer.login.sign_in' | t }}">
         </p>
-      
+
       	<p>
           <a class="btn btn--full" href="/account/register">Créer</a>
         </p>
-      
+
         <p><a href="{{ shop.url }}">{{ 'customer.login.cancel' | t }}</a></p>
         {% if form.password_needed %}
           <p><a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a></p>

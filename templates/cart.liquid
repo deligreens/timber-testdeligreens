@@ -1,4 +1,5 @@
-{%  include 'subscription-cart-footer' %} 
+{%  include 'subscription-cart-footer' %}
+{%  include 'add_subscription' %}
  <!-- /templates/cart.liquid -->
 {% comment %}
 
@@ -20,8 +21,9 @@
         <th class="text-right">{{ 'cart.label.total' | t }}</th>
       </thead>
       <tbody>
-        {% for item in cart.items %}
-          <tr class="cart__row table__section">
+        {% assign cart_items = cart.items | sort: 'grams' | reverse %}
+        {% for item in cart_items %}
+          <tr class="cart__row table__section" {% if item.title contains 'renew' %}id="abo"{% endif %}>
             <td data-label="{{ 'customer.order.product' | t }}">
               <a href="{{ item.url | within: collections.all }}" class="cart__image">
                 {% comment %}
@@ -105,7 +107,7 @@
         </p>
         <p><em>{{ 'cart.general.shipping_at_checkout' | t }}</em></p>
         <input type="submit" name="update" class="btn--secondary update-cart" value="{{ 'cart.general.update' | t }}">
-        <input type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}">
+        <input type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}" {% if cart_has_subscription_item == 'true' %} onclick="event.preventDefault(); saveCartNoteThenRedirect()" {% endif %}>
       </div>
     </div>
   </form>
@@ -117,3 +119,6 @@
   <p>{{ 'cart.general.empty' | t }}</p>
   <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
 {% endif %}
+<script>
+  $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p>Your first purchase starts your FREE 30 Days trial to Thrive Market. No risk, no obligation, cancel anytime. After your trial, you'll be charged $59.95 for a year-long membership (only $5 /month!). Learn More</p></td></tr>");
+</script>
