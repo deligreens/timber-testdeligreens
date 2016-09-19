@@ -2,6 +2,9 @@
 	<option>Choisir son jour de livraison</option>
 </select>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/locale/fr.js"></script>
+
 <script>
   $(document).ready(function() {
     $(window).unload(saveSettings);
@@ -26,20 +29,17 @@
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   }
 
-  var delay = 2;
-  var curr = new Date;
-  var first = curr.getDate() + delay;
-  var firstday = (new Date(curr.setDate(first))).toString();
-  var options = "";
-  var arguments = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
-  var blacklisted_days = ["samedi", "dimanche"];
-  for (var i = 0; i < 7; i++) {
-  	var next = new Date(curr.getTime());
-    next.setDate(first + i);
-    if (blacklisted_days.includes(next.toLocaleDateString("fr-FR", { weekday: 'long' }))) {
+  var delay = 2,
+      options = '',
+      blacklisted_days = ["samedi", "dimanche"];
+
+  for (var i = delay; i < 7 + delay; i++) {
+    var WeekdayNameInFr = moment().add(i, 'days').locale('fr').format('dddd');
+    var DateStringInFr = moment().add(i, 'days').locale('fr').format('dddd D MMMM');
+    if (blacklisted_days.includes(WeekdayNameInFr)) {
     }
     else {
-    	options += '<option>' + toTitleCase(next.toLocaleDateString("fr-FR", arguments)) + '</option>';
+    	options += '<option>' + toTitleCase(DateStringInFr) + '</option>';
     }
   };
   $("#delivery-picker").append(options);
