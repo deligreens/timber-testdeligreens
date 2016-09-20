@@ -97,7 +97,7 @@
               {% assign property_size = item.properties | size %}
               {% if property_size > 0 %}
                 {% for p in item.properties %}
-                  {% unless p.last == blank or p.first == "subscription_id" or p.first == "shipping_interval_frequency" or p.first == "shipping_interval_unit_type" %}
+                  {% unless p.last == blank or p.first == "subscription_id" or p.first == "shipping_interval_frequency" or p.first == "shipping_interval_unit_type" or p.first == "recurring_price" %}
                     {{ p.first }}:
 
                     {% comment %}
