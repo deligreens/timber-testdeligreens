@@ -21,8 +21,50 @@
         <th class="text-right">{{ 'cart.label.total' | t }}</th>
       </thead>
       <tbody>
-        {% assign cart_items = cart.items | sort: 'grams' | reverse %}
-        {% for item in cart_items %}
+        {% comment %}{% assign cart_items = cart.items | sort: 'grams' | reverse %}{% endcomment %}
+        {% for item in cart.items %}
+          {% for p in item.properties  %}
+              {% if p.first == 'shipping_interval_frequency' and not_subscribed == 'false' %}
+                  <script>
+                    function removeSubscriptionToCart (line_id) {
+                      data = {
+                        "quantity": 0,
+                        "id": line_id
+                      }
+                      jQuery.ajax({
+                          type: 'POST',
+                          url: '/cart/change.js',
+                          data: data,
+                          dataType: 'json',
+                          success: function() {
+                              window.location.href = '/cart';
+                          }
+                      });
+                    }
+                    removeSubscriptionToCart('{{ item.id }}');
+                  </script>
+              {% endif%}
+              {% if p.first == 'shipping_interval_frequency' and item.quantity > 1 %}
+                <script>
+                    function setSubscriptionToOne (line_id) {
+                      data = {
+                        "quantity": 1,
+                        "id": line_id
+                      }
+                      jQuery.ajax({
+                          type: 'POST',
+                          url: '/cart/change.js',
+                          data: data,
+                          dataType: 'json',
+                          success: function() {
+                              window.location.href = '/cart';
+                          }
+                      });
+                    }
+                    setSubscriptionToOne('{{ item.id }}');
+                </script>
+              {% endif %}
+          {% endfor %}
           <tr class="cart__row table__section" {% if item.title contains 'renew' %}id="abo"{% endif %}>
             <td data-label="{{ 'customer.order.product' | t }}">
               <a href="{{ item.url | within: collections.all }}" class="cart__image">
@@ -72,7 +114,7 @@
                 {% endfor %}
               {% endif %}
 
-              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart__remove">
+              <a href="/cart/change?id={{ item.id }}&amp;quantity=0" class="cart__remove">
                 <small>{{ 'cart.general.remove' | t }}</small>
               </a>
             </td>

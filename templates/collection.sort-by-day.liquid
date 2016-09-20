@@ -15,9 +15,15 @@
 {% comment %}
   Use .grid--rev so that the collection tags appear below the products on mobile
 {% endcomment %}
-{% assign day = cart.attributes['dayChosen'] | downcase %}
-{% assign day_liquid = day | split: " " | first %}
 
+{% if cart.attributes['dayChosen'] %}
+  {% assign day = cart.attributes['dayChosen'] | downcase %}
+  {% assign day_liquid = day | split: " " | first %}
+{% else %}
+{% endif %}
+  {{ 'now' | date: '%s' | plus: 172800 | date: '%A' }}
+  {{ 'custom.dates.monday' | t }}
+  {{ 'checkout_and_system.pagination.previous' | t }}
 <div class="grid--rev">
   <div class="grid__item large--three-quarters">
 

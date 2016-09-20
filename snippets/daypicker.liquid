@@ -43,6 +43,7 @@
     }
   };
   $("#delivery-picker").append(options);
+
   $("#delivery-picker").change(function() {
     var dayChosen = $("#delivery-picker").val();
     $.post('/cart/update.js', { attributes: { dayChosen } });

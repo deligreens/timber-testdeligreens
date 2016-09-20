@@ -128,9 +128,9 @@
 	rjQuery = jQuery.noConflict( true );
     var subscription_active='{{shop.metafields.subscriptions.subscription_active}}'
     function get_cookie(k){return(document.cookie.match('(^|; )'+k+'=([^;]*)')||0)[2]}
-    if (get_cookie('recharge')=='true' || subscription_active=='true') { 
+    if (get_cookie('recharge')=='true' || subscription_active=='true') {
         rjQuery('body').on('click','form[action="/checkout"] input[type="submit"], #ajaxifyCart [name="checkout"], #AjaxifyCart [name="checkout"], #shoppingBagInner [name="checkout"]', function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             window.location.href = '/cart';
         })
         rjQuery('.additional-checkout-buttons').hide()
