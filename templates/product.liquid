@@ -58,8 +58,8 @@
         {% comment %}
           ID addToCartForm is a selector for the ajax cart plugin
         {% endcomment %}
-        <form action="/cart/add" data-productid="{{product.id}}"  method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-vertical"> 
- {% if product.available %}{% include 'subscription-product' %}{% endif %} 
+        <form action="/cart/add" data-productid="{{product.id}}"  method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-vertical">
+ {% if product.available %}{% include 'subscription-product' %}{% endif %}
 
           {% comment %}
             Add product variants as a dropdown.
@@ -105,6 +105,8 @@
 
           <label for="Quantity" class="quantity-selector">{{ 'products.product.quantity' | t }}</label>
           <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+
+          <p style="display: none;" id="availability-{{product.id}}">{{ product.metafields.global.availability }}</p>
 
           <button type="submit" name="add" id="AddToCart" class="btn">
             <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
@@ -184,5 +186,37 @@
     {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
       $('.selector-wrapper').hide();
     {% endif %}
+  });
+</script>
+<script>
+  function toTitleCase(str)
+  {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
+  $(document).ready(function() {
+    var dayChosen = $("#delivery-picker").val();
+    if (dayChosen) {
+      var words = dayChosen.split(" ");
+    }
+    else {
+      var words = "Choisir un jour de livraison".split(" ");
+    }
+    var firstWord = words[0].toLowerCase();
+    var id = "#availability-" + {{product.id}};
+    var availability = $(id).text();
+    var test = availability.indexOf(firstWord) !== -1;
+    if (test) {
+    }
+    else {
+      $(id).parent().fadeTo( "slow" , 0.5);
+      $(id).parent().find("#AddToCart").remove();
+      $(id).parent().find("br").remove();
+      if (firstWord === "choisir") {
+        $(id).parent().append("<p>Choisir un jour de livraison</p>");
+      }
+      else {
+        $(id).parent().append("<p>Indisponible le " + toTitleCase(firstWord) + "</p>");
+      }
+    }
   });
 </script>
