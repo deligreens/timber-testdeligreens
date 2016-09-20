@@ -422,7 +422,13 @@
       });
     </script>
   {% endif %}
-            
-{% include 'subscription-theme-footer' %}
+
+  {% include 'subscription-theme-footer' %}
+  <script>
+  $( document ).ready(function() {
+    $('#abo .js-qty').find('button').remove();
+    // $('#abo .js-qty').find('input').css('border', 'none');
+  });
+</script>
 </body>
 </html>

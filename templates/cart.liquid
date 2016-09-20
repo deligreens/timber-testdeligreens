@@ -162,5 +162,7 @@
   <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
 {% endif %}
 <script>
-  $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p>Your first purchase starts your FREE 30 Days trial to Thrive Market. No risk, no obligation, cancel anytime. After your trial, you'll be charged $59.95 for a year-long membership (only $5 /month!). Learn More</p></td></tr>");
+  $( document ).ready(function() {
+    $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p>Your first purchase starts your FREE 30 Days trial to Thrive Market. No risk, no obligation, cancel anytime. After your trial, you'll be charged $59.95 for a year-long membership (only $5 /month!). Learn More</p></td></tr>");
+  });
 </script>
