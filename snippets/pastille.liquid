@@ -1,0 +1,24 @@
+{% assign current_url = '' %}
+
+{% case template %}
+  {% when 'product' %}
+    {% for tag in product.tags %}
+      {% if tag contains 'Bio' or tag contains 'bio'  %}
+        <div class="bio-product">Bio</div>
+      {% endif %}
+      {% if tag contains 'Local' or tag contains 'local' %}
+        <div class="local-product">Local</div>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    {% for tag in product.tags %}
+      {% if tag contains 'Bio' or tag contains 'bio'  %}
+        <div class="bio">Bio</div>
+      {% endif %}
+      {% if tag contains 'Local' or tag contains 'local' %}
+        <div class="local">Local</div>
+      {% endif %}
+    {% endfor %}
+{% endcase %}
+
+

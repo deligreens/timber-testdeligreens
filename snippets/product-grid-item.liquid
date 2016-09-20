@@ -53,6 +53,7 @@
   {% endcomment %}
   <a href="{{ product.url | within: collection }}" class="grid__image">
     <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+    {% include 'pastille' %}
   </a>
   <p style="display: none;" id="availability-{{product.id}}">{{ product.metafields.global.availability }}</p>
   <p class="h6">
