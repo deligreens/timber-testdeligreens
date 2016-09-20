@@ -65,7 +65,7 @@
                 </script>
               {% endif %}
           {% endfor %}
-          <tr class="cart__row table__section" {% if item.title contains 'renew' %}id="abo"{% endif %}>
+          <tr class="cart__row table__section" {% if item.title contains '1 mois' %}id="abo"{% endif %}>
             <td data-label="{{ 'customer.order.product' | t }}">
               <a href="{{ item.url | within: collections.all }}" class="cart__image">
                 {% comment %}
