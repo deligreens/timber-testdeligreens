@@ -1,6 +1,7 @@
 {%  include 'subscription-cart-footer' %}
 {%  include 'add_subscription' %}
- <!-- /templates/cart.liquid -->
+
+<!-- /templates/cart.liquid -->
 {% comment %}
 
   For info on test orders:
@@ -24,26 +25,28 @@
         {% comment %}{% assign cart_items = cart.items | sort: 'grams' | reverse %}{% endcomment %}
         {% for item in cart.items %}
           {% for p in item.properties  %}
+
               {% if p.first == 'shipping_interval_frequency' and not_subscribed == 'false' %}
-                  <script>
-                    function removeSubscriptionToCart (line_id) {
-                      data = {
-                        "quantity": 0,
-                        "id": line_id
-                      }
-                      jQuery.ajax({
-                          type: 'POST',
-                          url: '/cart/change.js',
-                          data: data,
-                          dataType: 'json',
-                          success: function() {
-                              window.location.href = '/cart';
-                          }
-                      });
+                <script>
+                  function removeSubscriptionToCart (line_id) {
+                    data = {
+                      "quantity": 0,
+                      "id": line_id
                     }
-                    removeSubscriptionToCart('{{ item.id }}');
-                  </script>
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '/cart/change.js',
+                        data: data,
+                        dataType: 'json',
+                        success: function() {
+                            window.location.href = '/cart';
+                        }
+                    });
+                  }
+                  removeSubscriptionToCart('{{ item.id }}');
+                </script>
               {% endif%}
+
               {% if p.first == 'shipping_interval_frequency' and item.quantity > 1 %}
                 <script>
                     function setSubscriptionToOne (line_id) {
@@ -64,6 +67,49 @@
                     setSubscriptionToOne('{{ item.id }}');
                 </script>
               {% endif %}
+
+              {% if p.first == 'shipping_interval_frequency' and item.id == 30662021703 and counter > 0 %}
+                <script>
+                  function removeSubscriptionToCart (line_id) {
+                    data = {
+                      "quantity": 0,
+                      "id": line_id
+                    }
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '/cart/change.js',
+                        data: data,
+                        dataType: 'json',
+                        success: function() {
+                            window.location.href = '/cart';
+                        }
+                    });
+                  }
+                  removeSubscriptionToCart('{{ item.id }}');
+                </script>
+              {% endif %}
+
+              {% if p.first == 'shipping_interval_frequency' and item.id == 31015492871 and counter < 1 %}
+                <script>
+                  function removeSubscriptionToCart (line_id) {
+                    data = {
+                      "quantity": 0,
+                      "id": line_id
+                    }
+                    jQuery.ajax({
+                        type: 'POST',
+                        url: '/cart/change.js',
+                        data: data,
+                        dataType: 'json',
+                        success: function() {
+                            window.location.href = '/cart';
+                        }
+                    });
+                  }
+                  removeSubscriptionToCart('{{ item.id }}');
+                </script>
+              {% endif %}
+
           {% endfor %}
           <tr class="cart__row table__section" {% if item.title contains '1 mois' %}id="abo"{% endif %}>
             <td data-label="{{ 'customer.order.product' | t }}">
@@ -161,8 +207,17 @@
   <p>{{ 'cart.general.empty' | t }}</p>
   <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
 {% endif %}
-<script>
-  $( document ).ready(function() {
-    $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p style=\"text-align: justify\">Votre 1er achat débute votre période d'essai gratuite de 30 jours au service Deligreens. Aucun risque, aucune obligation, vous pouvez annuler votre abonnement à tout moment. Après cet essai gratuit, vous serez débité(e) de 29,99€ chaque mois, pour vous faire livrer à domicile les produits Deligreens. En apprendre plus</p></td></tr>");
-  });
-</script>
+
+{% if counter > 0 %}
+  <script>
+    $( document ).ready(function() {
+      $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p style=\"text-align: justify\">Vous serez débité(e) de 29,99€ chaque mois, pour vous faire livrer à domicile les produits Deligreens. Aucun risque, aucune obligation, vous pouvez annuler votre abonnement à tout moment. En apprendre plus</p></td></tr>");
+    });
+  </script>
+{% else %}
+  <script>
+    $( document ).ready(function() {
+      $('#abo').after("<tr class=\"cart__row table__section\"><td colspan=\"5\"><p style=\"text-align: justify\">Votre 1er achat débute votre période d'essai gratuite de 30 jours au service Deligreens. Aucun risque, aucune obligation, vous pouvez annuler votre abonnement à tout moment. Après cet essai gratuit, vous serez débité(e) de 29,99€ chaque mois, pour vous faire livrer à domicile les produits Deligreens. En apprendre plus</p></td></tr>");
+    });
+  </script>
+{% endif %}

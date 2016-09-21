@@ -9,6 +9,11 @@
   {% assign not_subscribed = 'true'  %}
 {% endunless %}
 
+{% assign counter = 0 %}
+{% for order in customer.orders %}
+  {% assign counter = counter | plus: 1 %}
+{% endfor %}
+
 {% if cart_has_subscription_item == 'false' and not_subscribed == 'true' %}
   <script>
     function addItemToCart (variant_id, quantity, shipping_interval_frequency, shipping_interval_unit_type, subscription_id) {
@@ -30,7 +35,14 @@
           }
       });
     }
-    addItemToCart(30662021703 , 1, "30", "Days", "21179");
+
+    {% if counter > 0 in customer.orders %}
+      // sans période d'essai
+      addItemToCart(31015492871 , 1, "30", "Days", "21684");
+    {% else %}
+      // période d'essai
+      addItemToCart(30662021703 , 1, "30", "Days", "21179");
+    {% endif %}
   </script>
 {% endif %}
 
